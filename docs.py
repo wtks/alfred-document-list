@@ -10,7 +10,10 @@ def main(wf):
     args = wf.args
     dirs = getdirs(ROOT_PATH)
     if len(args) == 0 or all(x != args[0] for x in dirs):
-        for dir in dirs:
+        query = None
+        if len(args) >= 1:
+            query = args[0]
+        for dir in wf.filter(query, dirs):
             desc = ''
             desc_file = os.path.join(ROOT_PATH, dir, '.description')
             if os.path.isfile(desc_file):
@@ -20,7 +23,7 @@ def main(wf):
                 dir,
                 desc,
                 arg=ROOT_PATH + dir,
-                autocomplete=dir,
+                autocomplete=dir + ' ',
                 icon='public.folder',
                 icontype='filetype',
                 type='file',
